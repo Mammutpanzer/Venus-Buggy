@@ -1,0 +1,7 @@
+C:\Users\Matthias\documents\visual studio 2010\Projects\VenusBuggy\VenusBuggy\bin\Debug\VenusBuggy.exe
+C:\Users\Matthias\documents\visual studio 2010\Projects\VenusBuggy\VenusBuggy\bin\Debug\VenusBuggy.pdb
+C:\Users\Matthias\documents\visual studio 2010\Projects\VenusBuggy\VenusBuggy\bin\Debug\OpenTK.dll
+C:\Users\Matthias\documents\visual studio 2010\Projects\VenusBuggy\VenusBuggy\bin\Debug\OpenTK.pdb
+C:\Users\Matthias\documents\visual studio 2010\Projects\VenusBuggy\VenusBuggy\bin\Debug\OpenTK.xml
+C:\Users\Matthias\documents\visual studio 2010\Projects\VenusBuggy\VenusBuggy\obj\x86\Debug\VenusBuggy.exe
+C:\Users\Matthias\documents\visual studio 2010\Projects\VenusBuggy\VenusBuggy\obj\x86\Debug\VenusBuggy.pdb
