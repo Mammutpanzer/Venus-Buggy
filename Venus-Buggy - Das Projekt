@@ -1,9 +1,9 @@
 1     Zielbestimmungen                                                  
  
 Dem einzelnen Benutzer soll das Spielen des Spieles Venus Buggy ermöglicht werden. Dieses Programm dient der reinen 
-Unterhaltung. Zur Umsetzung soll die Sprache C# dienen. Das Programm soll eine zweidimensionale Landkarte erstellen, 
-auf der der Benutzer mit einem Buggy fahren können soll. Dabei sollen zufällig auch Löcher entstehen, die mit Lava 
-befüllt sind, die dem Buggy schaden sollen.
+Unterhaltung. Zur Umsetzung soll die Sprache C# dienen. Das Programm soll eine seitliche zweidimensionale Landkarte 
+zufällig erstellen, auf der der Benutzer mit einem Buggy fahren können soll. Dabei sollen zufällig auch Löcher 
+entstehen, die mit Lava befüllt sind, die dem Buggy schaden sollen.
 
 Die Steuerung soll sowohl mit WSAD als auch mit den Pfeiltasten erfolgen. Die Maus muss implementiert werden, damit 
 der Benutzer Waffen abfeuern und Monster töten kann, um Punkte zu sammeln. Im Hauptmenü soll der Benutzer erspielte 
