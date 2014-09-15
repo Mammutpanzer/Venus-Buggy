@@ -16,20 +16,24 @@ namespace VenusBuggy
         public static void Main()
         {
 
+            short Width = 1366; //Fenstergröße
+            short Height = 768;
+            var Border = WindowBorder.Hidden;   //Rahmen
+            var Fullscreen = WindowState.Fullscreen; //Fenstergröße
 
+            var BGColor = new Color(); //Hintergrundfarbe       BGColor = Color.FromArgb(0, 128, 128, 128);
 
             using (var app = new GameWindow())
             {
                 app.Load += (sender, e) =>
                 {
-                    app.Width = 1366;   //Fenstergröße
-                    app.Height = 768;
+                    app.Width = Width;   
+                    app.Height = Height;
+                    app.WindowBorder = Border;     
+                    app.WindowState = Fullscreen;
 
+                    BGColor = Color.FromArgb(0, 128, 128, 128);
 
-                    GL.ClearColor(Color.AliceBlue);
-
-                    app.WindowBorder = WindowBorder.Hidden;     //Rahmen
-                    app.WindowState = WindowState.Fullscreen;   //Vollbild
                     app.VSync = VSyncMode.On;
                 };
 
@@ -53,7 +57,7 @@ namespace VenusBuggy
                     GL.LoadIdentity();
                     GL.Ortho(0, app.Width, 0, app.Height, 0.0, 4.0);  //Nullpunkt ist unten links!
 
-
+                    GL.ClearColor(BGColor);
 
                     GL.Begin(PrimitiveType.Triangles);
                     //GL.BindTexture(TextureTarget.Texture2D, test);
