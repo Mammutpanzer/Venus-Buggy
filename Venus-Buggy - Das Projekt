@@ -1,0 +1,77 @@
+1     Zielbestimmungen                                                  
+ 
+Dem einzelnen Benutzer soll das Spielen des Spieles Venus Buggy ermöglicht werden. Dieses Programm dient der reinen 
+Unterhaltung. Zur Umsetzung soll die Sprache C# dienen. Das Programm soll eine zweidimensionale Landkarte erstellen, 
+auf der der Benutzer mit einem Buggy fahren können soll. Dabei sollen zufällig auch Löcher entstehen, die mit Lava 
+befüllt sind, die dem Buggy schaden sollen.
+
+Die Steuerung soll sowohl mit WSAD als auch mit den Pfeiltasten erfolgen. Die Maus muss implementiert werden, damit 
+der Benutzer Waffen abfeuern und Monster töten kann, um Punkte zu sammeln. Im Hauptmenü soll der Benutzer erspielte 
+Punkte gegen bessere Buggyteile und Waffen eintauschen können. 
+
+Es wäre positiv, wenn der Benutzer Punkte für bestimmte Stunts wie Backflips bekommen könnte. Die Grafik kann im 
+Comicstil gehalten werden, darf aber auch an den Realismus angelehnt sein. Sound- und Partikeleffekte sind Pflicht.
+
+Lichteffekte insbesondere dynamisches Licht ist erwünscht aber nicht absolute Pflicht.
+ 
+ 
+ 
+2     Produkteinsatz
+ 
+Das Programm soll ausschließlich der Unterhaltung und dem Demonstrationszweck dienen. Es soll auf die Windows-Plattform 
+abzielen. Es ist noch nicht bekannt, ob sich die Software erstens verkaufen lässt und zweitens auch verkauft werden 
+soll. Im Falle des Verkaufs wird hier folgende Festlegung des Kunden bereits vorab gemacht:
+
+      Im Falle der Verkaufseignung lässt sich pro verkauftem Exemplar maximal ein Euro netto verdienen! Diese Regelung 
+      gilt für den ersten hiermit geplanten Teil der Reihe Venus Buggy. Wird darüber hinaus Geld verdient, so kommt es 
+      vollständig eventuell beteiligten Projekthelfern oder Programmierern zugute. Notfalls wird ein Fest veranstaltet.
+
+
+
+3     Produktfunktionen
+ 
+3.1    Steuerung
+
+- Mit W oder Pfeil hoch wird eine Beschleunigung true.
+- Mit S oder Pfeil runter wird eine Bremsung true.
+- Mit A oder Pfeil links wird eine Rotation -1.
+- Mit D oder Pfeil rechts wird eine Rotation 1.
+- Mit Space werden Triebwerke aktiviert.
+
+- Mit Linksklick wird in Richtung Mausposition geschossen.
+- Rechtsklick bleibt derzeit offen.
+
+3.2    Buggy
+
+- Ist ein statisches Modell, bestehend aus Frame und 2 Rädern.
+- Wünschenswert ist Scheinwerferlicht und rotes Rücklicht.
+- Falls Scheinwerferlicht: Wünschenswert wäre Zusatzscheinwerfer, der in Mausrichtung leuchtet.
+- Räder dämpfen Stoß etwas.
+- Buggy darf sehr klein sein, damit die Welt umso größer scheint.
+
+3.3    Landschaft und Level
+
+- Level generieren sich vollautomatisch endlos im Zufallsalgorithmus.
+- Extreme Wetter- und Lichtverhältnisse gewünscht, jedoch kein Muss.
+- Boden- und Himmelfarbe darf sich laufend ändern.
+- Ab einer bestimmten Höhe erscheint Lava vordefiniert.
+- Lavabecken könnten auch in höheren Regionen vorhanden sein.
+- Felsbrocken (auch große) werden verlangt.
+
+3.4    Gegner
+
+- Vorrangig werden wurmartige Monster angedacht, die optisch in eine Lavawelt passen - Gern dürfen diese Würmer auch 
+  Projektile schießen wie zum Beispiel Feuerbälle oder Gesteinsbrocken.
+- Endgegner könnten eingebaut werden.
+
+
+ 
+4     Qualitätsanforderungen
+
+Es wird besonderer Wert auf die Spielbarkeit und die Spielatmosphäre gelegt, die sehr düster sein muss, aber auch 
+Lichtblicke aufweisen darf. Dazu wünsche ich mir gerne passende Soundtracks - optimal Orkesterbelastet.
+
+Die Spielephysik muss daneben mit eventuellen Partikeleffekten ebenfalls an oberster Stelle stehen. Wenn dynamisches 
+Licht umgesetzt wird, so wird auf die Funktionsweise und nicht auf die Shönheit besonderer Wert gelegt.
+
+Das Menüsystem darf einfach gehalten werden.
