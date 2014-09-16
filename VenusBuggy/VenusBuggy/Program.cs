@@ -49,7 +49,7 @@ namespace VenusBuggy
                     app.WindowBorder = Border;     
                     app.WindowState = Fullscreen;
 
-                    tex_bg = game.getMenuBG(Width);
+                    tex_bg = game.loadTexture("texturen/MenuBG_1920_1080.jpg");
                     tex_end = game.loadTexture("texturen/MenuEnd.png");
 
                     Console.WriteLine(tex_bg);
@@ -91,7 +91,7 @@ namespace VenusBuggy
                     {
                         case 0:
 
-                            game.drawMenu(tex_bg, tex_end);
+                            game.drawMenu(Width, Height, tex_bg, tex_end);
                             break;
                     }
 
@@ -106,16 +106,16 @@ namespace VenusBuggy
             }
         }
 
-        private void drawMenu(int bg, int end)
+        private void drawMenu(int Width, int Height, int bg, int end)
         {
             GL.Begin(PrimitiveType.Quads);
             GL.BindTexture(TextureTarget.Texture2D, bg);
                 GL.TexCoord2(0, 0);
-                GL.Vertex2(000.0f, 1080.0f);
+                GL.Vertex2(000.0f, Height);
                 GL.TexCoord2(1, 0);
-                GL.Vertex2(1920.0f, 1080.0f);
+                GL.Vertex2(Width, Height);
                 GL.TexCoord2(1, 1);
-                GL.Vertex2(1920.0f, 00.0f);
+                GL.Vertex2(Width, 00.0f);
                 GL.TexCoord2(0, 1);
                 GL.Vertex2(00.0f, 00.0f);
             GL.End();
@@ -134,22 +134,21 @@ namespace VenusBuggy
             GL.End();
         }
 
-        private int getMenuBG(int Width) // Holt sich je nach Startauflösung die korrekte Hintergrundgröße
-        {
-            int tex;
-            if (Width < 1280)
-                tex = loadTexture("texturen/MenuBG_1024_768.jpg");
-            else if (Width < 1366)
-                tex = loadTexture("texturen/MenuBG_1280_1024.jpg");
-            else if (Width < 1440)
-                tex = loadTexture("texturen/MenuBG_1366_768.jpg");
-            else if (Width < 1920)
-                tex = loadTexture("texturen/MenuBG_1440_900.jpg");
-            else
-                tex = loadTexture("texturen/MenuBG_1920_1080.jpg");
+        //private int getMenuBG(int Width) // Holt sich je nach Startauflösung die korrekte Hintergrundgröße
+        //{
+        //    int tex;
+        //    if (Width < 1280)
+        //        tex = loadTexture("texturen/MenuBG_1024_768.jpg");
+        //    else if (Width < 1366)
+        //        tex = loadTexture("texturen/MenuBG_1280_1024.jpg");
+        //    else if (Width < 1440)
+        //        tex = loadTexture("texturen/MenuBG_1366_768.jpg");
+        //    else if (Width < 1920)
+        //        tex = loadTexture("texturen/MenuBG_1440_900.jpg");
+        //    else
 
-            return tex;
-        }
+        //    return tex;
+        //}
 
         private int loadTexture(string filename)    //Fertiger Texturenlader
         {
