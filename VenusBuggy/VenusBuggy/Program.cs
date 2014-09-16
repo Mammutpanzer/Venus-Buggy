@@ -50,7 +50,7 @@ namespace VenusBuggy
                     app.WindowState = Fullscreen;
 
                     tex_bg = game.getMenuBG(Width);
-                    tex_end = game.loadTexture2("texturen/MenuEnd.png");
+                    tex_end = game.loadTexture("texturen/MenuEnd.png");
 
                     Console.WriteLine(tex_bg);
                     Console.WriteLine(tex_end);
@@ -174,35 +174,6 @@ namespace VenusBuggy
                 OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, bmp_data.Scan0);
 
             bmp.UnlockBits(bmp_data);
-
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
-
-            return id;
-        }
-        private int loadTexture2(string filename)    //Fertiger Texturenlader
-        {
-            if (String.IsNullOrEmpty(filename))
-                throw new ArgumentException(filename);
-
-            if (!File.Exists(filename))
-            {
-                Console.WriteLine("FEHLER: Die Datei '" + filename + "' existiert nicht im Verzeichnis!");
-                Console.WriteLine("Prüfen Sie das Vorhandensein dieser Datei bzw. die Richtigkeit des Dateinamens oder der Dateiendung.");
-                return 0;
-            }
-
-            int id = GL.GenTexture();       //Nimm die Textur und gib ihr eine ID
-            //GL.BindTexture(TextureTarget.Texture2D, id);
-
-            // Und den Rest hiervon verstehe ich nicht
-            Bitmap bmp2 = new Bitmap(filename);
-            BitmapData bmp_data = bmp2.LockBits(new Rectangle(0, 0, bmp2.Width, bmp2.Height), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-
-            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, bmp_data.Width, bmp_data.Height, 0,
-                OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, bmp_data.Scan0);
-
-            bmp2.UnlockBits(bmp_data);
 
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
