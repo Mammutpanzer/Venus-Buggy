@@ -44,7 +44,7 @@ namespace VenusBuggy
                     app.WindowBorder = Border;     
                     app.WindowState = Fullscreen;
 
-                    tex_test = game.loadTexture("texturen/MenuBG.jpg");
+                    tex_test = game.loadTexture("texturen/MenuBG.jpeg");
 
 
                     GL.Enable(EnableCap.Texture2D); //Erlaube 2D-Teturierung
