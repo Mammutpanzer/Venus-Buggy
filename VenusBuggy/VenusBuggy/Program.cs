@@ -28,7 +28,7 @@ namespace VenusBuggy
             var Border = WindowBorder.Hidden;   //Rahmen
             var Fullscreen = WindowState.Fullscreen; //Vollbildmodus
 
-            int test = 0;
+            int tex_test = 0;
             
 
             var BGColor = new Color(); //Hintergrundfarbe       BGColor = Color.FromArgb(0, 128, 128, 128);
@@ -44,7 +44,7 @@ namespace VenusBuggy
                     app.WindowBorder = Border;     
                     app.WindowState = Fullscreen;
 
-                    test = game.loadTexture("texturen/hello.jpg");
+                    tex_test = game.loadTexture("texturen/hello2.jpg");
 
 
                     GL.Enable(EnableCap.Texture2D); //Erlaube 2D-Teturierung
@@ -76,18 +76,20 @@ namespace VenusBuggy
 
                     GL.ClearColor(BGColor);
 
-                    test = game.loadTexture("texturen/hello.jpg");
-                    Console.WriteLine(test);
 
 
-                    GL.Begin(PrimitiveType.Triangles);
-                    GL.BindTexture(TextureTarget.Texture2D, test);
-                    GL.TexCoord2(0.5, 1);
-                    GL.Vertex2(50.0f, 100.0f);
+                    GL.Begin(PrimitiveType.Quads);
+                    GL.BindTexture(TextureTarget.Texture2D, tex_test);
                     GL.TexCoord2(0, 0);
-                    GL.Vertex2(0.0f, 0.0f);
+                    GL.Vertex2(000.0f, 1080.0f);
                     GL.TexCoord2(1, 0);
-                    GL.Vertex2(100.0f, 0.0f);
+                    GL.Vertex2(1920.0f, 1080.0f);
+                    GL.TexCoord2(1, 1);
+                    GL.Vertex2(1920.0f, 00.0f);
+                    GL.TexCoord2(0, 1);
+                    GL.Vertex2(00.0f, 00.0f);
+
+
 
                     GL.End();
 
