@@ -14,10 +14,6 @@ namespace VenusBuggy
 {
     class Application
     {
-
-        //public int loadTexture(string filename);
-
-
         [STAThread] //Single Threaded Appartment
         public static void Main()
         {
@@ -39,28 +35,42 @@ namespace VenusBuggy
             var BGColor = new Color(); //Hintergrundfarbe       BGColor = Color.FromArgb(0, 128, 128, 128);
 
 
+
             using (var app = new GameWindow())
             {
                 app.Load += (sender, e) =>
                 {
-
+                    app.Title = "VenusBuggy";
                     app.Width = Width;   
                     app.Height = Height;
                     app.WindowBorder = Border;     
                     app.WindowState = Fullscreen;
 
-                    tex_bg = game.loadTexture("texturen/MenuBG_1920_1080.jpg");
+                    //tex_bg = game.createTexture("tex_bg", "texturen/MenuBG_1920_1080.jpg");
+                    //tex_end = game.createTexture("tex_end", "texturen/MenuEnd.jpg");
+
+                    //tex_bg = game.loadTexture("texturen/MenuBG_1920_1080.jpg");
+
                     tex_end = game.loadTexture("texturen/MenuEnd.png");
+                    tex_bg = game.loadTexture("texturen/MenuBG_1920_1080.jpg");
 
-                    Console.WriteLine(tex_bg);
-                    Console.WriteLine(tex_end);
+                    //Bitmap MenuBG = new Bitmap("texturen/MenuBG_1920_1080.jpg");
+                    //tex_bg = game.loadTexture(MenuBG);
+                    //Bitmap MenuEnd = new Bitmap("texturen/MenuEnd.png");
+                    //tex_end = game.loadTexture(MenuEnd);
 
-                    GL.Enable(EnableCap.Texture2D); //Erlaube 2D-Teturierung
 
+                    //tex_end = game.loadTexture("texturen/MenuEnd.png");
+
+                    //Console.WriteLine(tex_bg);
+                    //Console.WriteLine(tex_end);
+
+
+                    GL.Enable(EnableCap.Texture2D); //Texturierung aktivieren
                     GL.Enable(EnableCap.Blend); //Alpha-Kanäle aktivieren
                     GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
 
-                    BGColor = Color.FromArgb(0, 128, 128, 128);
+                    BGColor = Color.FromArgb(0, 128, 128, 128); //Die Standardfensterfarbe //Nur zur Sicherheit
 
                     app.VSync = VSyncMode.On;
                 };
@@ -106,10 +116,13 @@ namespace VenusBuggy
             }
         }
 
+
         private void drawMenu(int Width, int Height, int bg, int end)
         {
-            GL.Begin(PrimitiveType.Quads);
+
             GL.BindTexture(TextureTarget.Texture2D, bg);
+            GL.Begin(PrimitiveType.Quads);
+
                 GL.TexCoord2(0, 0);
                 GL.Vertex2(000.0f, Height);
                 GL.TexCoord2(1, 0);
@@ -120,62 +133,45 @@ namespace VenusBuggy
                 GL.Vertex2(00.0f, 00.0f);
             GL.End();
 
-
-            GL.Begin(PrimitiveType.Quads);
             GL.BindTexture(TextureTarget.Texture2D, end);
-                GL.TexCoord2(0, 0);
-                GL.Vertex2(100.0f, 144.0f);
-                GL.TexCoord2(1, 0);
-                GL.Vertex2(325.0f, 144.0f);
-                GL.TexCoord2(1, 1);
-                GL.Vertex2(325.0f, 100.0f);
+            GL.Begin(PrimitiveType.Quads);
                 GL.TexCoord2(0, 1);
                 GL.Vertex2(100.0f, 100.0f);
+                GL.TexCoord2(1, 1);
+                GL.Vertex2(325.0f, 100.0f);
+                GL.TexCoord2(1, 0);
+                GL.Vertex2(325.0f, 144.0f);
+                GL.TexCoord2(0, 0);
+                GL.Vertex2(100.0f, 144.0f);
             GL.End();
+
         }
-
-        //private int getMenuBG(int Width) // Holt sich je nach Startauflösung die korrekte Hintergrundgröße
-        //{
-        //    int tex;
-        //    if (Width < 1280)
-        //        tex = loadTexture("texturen/MenuBG_1024_768.jpg");
-        //    else if (Width < 1366)
-        //        tex = loadTexture("texturen/MenuBG_1280_1024.jpg");
-        //    else if (Width < 1440)
-        //        tex = loadTexture("texturen/MenuBG_1366_768.jpg");
-        //    else if (Width < 1920)
-        //        tex = loadTexture("texturen/MenuBG_1440_900.jpg");
-        //    else
-
-        //    return tex;
-        //}
 
         private int loadTexture(string filename)    //Fertiger Texturenlader
         {
-            if (String.IsNullOrEmpty(filename))
-                throw new ArgumentException(filename);
-
-            if (!File.Exists(filename))
-            {
-                Console.WriteLine("FEHLER: Die Datei '" + filename + "' existiert nicht im Verzeichnis!");
-                Console.WriteLine("Prüfen Sie das Vorhandensein dieser Datei bzw. die Richtigkeit des Dateinamens oder der Dateiendung.");
-                return 0;
-            }
-
             int id = GL.GenTexture();       //Nimm die Textur und gib ihr eine ID
-            //GL.BindTexture(TextureTarget.Texture2D, id);
+            GL.BindTexture(TextureTarget.Texture2D, id);
 
-            // Und den Rest hiervon verstehe ich nicht
             Bitmap bmp = new Bitmap(filename);
-            BitmapData bmp_data = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+            BitmapData bmp_data = bmp.LockBits(
+                new Rectangle(0, 0, bmp.Width, bmp.Height), 
+                ImageLockMode.ReadOnly, 
+                System.Drawing.Imaging.PixelFormat.Format32bppArgb);
 
-            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, bmp_data.Width, bmp_data.Height, 0,
-                OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, bmp_data.Scan0);
-
-            bmp.UnlockBits(bmp_data);
+            GL.TexImage2D(
+                TextureTarget.Texture2D, 
+                0, 
+                PixelInternalFormat.Rgba, 
+                bmp_data.Width, bmp_data.Height, 
+                0,
+                OpenTK.Graphics.OpenGL.PixelFormat.Bgra, 
+                PixelType.UnsignedByte, 
+                bmp_data.Scan0);
 
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
+
+            bmp.UnlockBits(bmp_data);
 
             return id;
         }
