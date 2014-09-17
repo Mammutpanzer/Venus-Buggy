@@ -35,6 +35,8 @@ namespace VenusBuggy
             int tex_MenuEnd = 0;
             int tex_Bastelkopie = 0;
 
+            Panel panel = new Panel();
+
             using (var app = new GameWindow())
             {
                 app.Load += (sender, e) =>
@@ -87,10 +89,6 @@ namespace VenusBuggy
                             game.drawMenu(Width, Height, tex_MenuBG, tex_MenuEnd, tex_Bastelkopie);
                             break;
                     }
-
-
-
-
 
                     app.SwapBuffers();
                 };
