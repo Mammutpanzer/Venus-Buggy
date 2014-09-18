@@ -177,5 +177,8 @@ namespace VenusBuggy
             GL.Vertex2(pos.X, pos.Y + Height);
             GL.End();
         }
+
+        //############################################################# Check-Event einfügen und Konstruktor um Rückgabewert 'int result' erweitern
+
     }
 }

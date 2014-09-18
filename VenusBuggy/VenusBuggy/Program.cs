@@ -30,6 +30,8 @@ namespace VenusBuggy
             var Border = WindowBorder.Hidden;   //Rahmen
             var Fullscreen = WindowState.Fullscreen; //Vollbildmodus
 
+            Point mousePos = new Point();
+
             //---------- Panels ----------//
 
             Panel pan_MenuBG = null;
@@ -73,14 +75,27 @@ namespace VenusBuggy
 
                 app.UpdateFrame += (sender, e) =>
                 {
+                    mousePos.X = app.Mouse.X;               //Aktualisiere Maus-Koordinaten
+                    mousePos.Y = Height - app.Mouse.Y - 1;
+
                     if (app.Keyboard[Key.Escape])
                     {
                         app.Exit();
                     }
+
+
+
+
+
+
                 };
 
                 app.RenderFrame += (sender, e) =>
                 {
+                    //Console.WriteLine(mousePos.X);
+                    //Console.WriteLine(mousePos.Y);
+
+
                     GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
                     GL.MatrixMode(MatrixMode.Projection);
                     GL.LoadIdentity();
