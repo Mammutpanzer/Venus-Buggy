@@ -22,20 +22,19 @@ namespace VenusBuggy
             //--------- Systemvariablen ----------//
             int cron = 0;   //Globale Steuervariable
 
-            short Width = 1366; //Fenstergröße
-            short Height = 768;
+            short Width = 1920; //Fenstergröße
+            short Height = 1080;
 
             var BGColor = new Color(); //Hintergrundfarbe       BGColor = Color.FromArgb(0, 128, 128, 128);
 
             var Border = WindowBorder.Hidden;   //Rahmen
             var Fullscreen = WindowState.Fullscreen; //Vollbildmodus
 
-            //---------- Texturen-IDs ----------//
-            int tex_MenuBG = 0;
-            int tex_MenuEnd = 0;
-            int tex_Bastelkopie = 0;
+            //---------- Panels ----------//
 
-            Panel panel = new Panel();
+            Panel pan_MenuBG = null;
+            Panel pan_MenuEnd = null;
+            Panel pan_MenuTest = null;
 
             using (var app = new GameWindow())
             {
@@ -47,9 +46,9 @@ namespace VenusBuggy
                     app.WindowBorder = Border;     
                     app.WindowState = Fullscreen;
 
-                    tex_MenuEnd = game.loadTexture("texturen/MenuEnd.png");
-                    tex_MenuBG = game.loadTexture("texturen/MenuBG_1920_1080.jpg");
-                    tex_Bastelkopie = game.loadTexture("texturen/Bastelkopie.png");
+                    pan_MenuBG = new Panel(0, 0, Width, Height, 0, "texturen/MenuBG_1920_1080.jpg");
+                    pan_MenuEnd = new Panel(100, 100, 225, 44, 0, "texturen/MenuEnd.png");
+                    pan_MenuTest = new Panel(100, 160, 225, 44, 0, "texturen/Bastelkopie.png");
 
                     GL.Enable(EnableCap.Texture2D); //Texturierung aktivieren
                     GL.Enable(EnableCap.Blend); //Alpha-Kanäle aktivieren
@@ -84,9 +83,11 @@ namespace VenusBuggy
 
                     switch (cron)
                     {
-                        case 0:
+                        case 0: // 0 = Du befindest dich derzeit im Hauptmenü oberster Ebene
 
-                            game.drawMenu(Width, Height, tex_MenuBG, tex_MenuEnd, tex_Bastelkopie);
+                            pan_MenuBG.draw();
+                            pan_MenuEnd.draw();
+                            pan_MenuTest.draw();
                             break;
                     }
 
@@ -95,77 +96,6 @@ namespace VenusBuggy
 
                 app.Run(60.0);  //Updatefrequenz - Drawing wird notfalls übersprungen
             }
-        }
-
-
-        private void drawMenu(int Width, int Height, int tex_MenuBG, int tex_MenuEnd, int tex_Bastelkopie)
-        {
-
-            GL.BindTexture(TextureTarget.Texture2D, tex_MenuBG);
-            GL.Begin(PrimitiveType.Quads);
-            GL.TexCoord2(0, 0);
-            GL.Vertex2(000.0f, Height);
-            GL.TexCoord2(1, 0);
-            GL.Vertex2(Width, Height);
-            GL.TexCoord2(1, 1);
-            GL.Vertex2(Width, 00.0f);
-            GL.TexCoord2(0, 1);
-            GL.Vertex2(00.0f, 00.0f);
-            GL.End();
-
-            GL.BindTexture(TextureTarget.Texture2D, tex_MenuEnd);
-            GL.Begin(PrimitiveType.Quads);
-            GL.TexCoord2(0, 1);
-            GL.Vertex2(100.0f, 100.0f);
-            GL.TexCoord2(1, 1);
-            GL.Vertex2(325.0f, 100.0f);
-            GL.TexCoord2(1, 0);
-            GL.Vertex2(325.0f, 144.0f);
-            GL.TexCoord2(0, 0);
-            GL.Vertex2(100.0f, 144.0f);
-            GL.End();
-
-            GL.BindTexture(TextureTarget.Texture2D, tex_Bastelkopie);
-            GL.Begin(PrimitiveType.Quads);
-            GL.TexCoord2(0, 1);
-            GL.Vertex2(100.0f, 160.0f);
-            GL.TexCoord2(1, 1);
-            GL.Vertex2(325.0f, 160.0f);
-            GL.TexCoord2(1, 0);
-            GL.Vertex2(325.0f, 204.0f);
-            GL.TexCoord2(0, 0);
-            GL.Vertex2(100.0f, 204.0f);
-            GL.End();
-
-        }
-
-        private int loadTexture(string filename)    //Fertiger Texturenlader - Gibt die Speicher-ID zurück
-        {
-            int id = GL.GenTexture();       //Nimm die Textur und gib ihr eine ID
-            GL.BindTexture(TextureTarget.Texture2D, id);
-
-            Bitmap bmp = new Bitmap(filename);
-            BitmapData bmp_data = bmp.LockBits(
-                new Rectangle(0, 0, bmp.Width, bmp.Height), 
-                ImageLockMode.ReadOnly, 
-                System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-
-            GL.TexImage2D(
-                TextureTarget.Texture2D, 
-                0, 
-                PixelInternalFormat.Rgba, 
-                bmp_data.Width, bmp_data.Height, 
-                0,
-                OpenTK.Graphics.OpenGL.PixelFormat.Bgra, 
-                PixelType.UnsignedByte, 
-                bmp_data.Scan0);
-
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
-
-            bmp.UnlockBits(bmp_data);
-
-            return id;
         }
     }
 }
