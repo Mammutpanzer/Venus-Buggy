@@ -34,8 +34,10 @@ namespace VenusBuggy
 
             Panel pan_MenuBG = null;
             Panel pan_MenuEnd = null;
-            Panel pan_MenuTest = null;
-
+            Panel pan_MenuOpts = null;
+            Panel pan_MenuNew = null;
+            //Panel pan_MenuTest = null;
+            
             using (var app = new GameWindow())
             {
                 app.Load += (sender, e) =>
@@ -46,13 +48,18 @@ namespace VenusBuggy
                     app.WindowBorder = Border;     
                     app.WindowState = Fullscreen;
 
-                    pan_MenuBG = new Panel(0, 0, Width, Height, 0, "texturen/MenuBG_1920_1080.jpg");
-                    pan_MenuEnd = new Panel(100, 100, 225, 44, 0, "texturen/MenuEnd.png");
-                    pan_MenuTest = new Panel(100, 160, 225, 44, 0, "texturen/Bastelkopie.png");
+                    pan_MenuBG = new Panel(0, 0, Width, Height, "texturen/MenuBG_1920_1080.jpg");
+                    pan_MenuEnd = new Panel(100, 100, 225, 44, "texturen/MenuEnd0.bmp", "texturen/MenuEnd1.bmp");
+                    pan_MenuOpts = new Panel(100, 160, 225, 44, "texturen/MenuOpts0.bmp", "texturen/MenuOpts1.bmp");
+                    pan_MenuNew = new Panel(100, 220, 225, 44, "texturen/MenuNew0.bmp", "texturen/MenuNew1.bmp");
+                    //pan_MenuTest = new Panel(100, 160, 225, 44, "texturen/Bastelkopie.png");
 
                     GL.Enable(EnableCap.Texture2D); //Texturierung aktivieren
                     GL.Enable(EnableCap.Blend); //Alpha-Kanäle aktivieren
+
+
                     GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
+                    GL.Disable(EnableCap.DepthTest);
 
                     BGColor = Color.FromArgb(0, 128, 128, 128); //Die Standardfensterfarbe //Nur zur Sicherheit
 
@@ -87,7 +94,9 @@ namespace VenusBuggy
 
                             pan_MenuBG.draw();
                             pan_MenuEnd.draw();
-                            pan_MenuTest.draw();
+                            pan_MenuOpts.draw();
+                            pan_MenuNew.draw();
+                            //pan_MenuTest.draw();
                             break;
                     }
 
