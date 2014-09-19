@@ -32,7 +32,6 @@ namespace VenusBuggy
 
             Point mousePos = new Point();
             var mouse = Mouse.GetState();
-            bool mouseClick = false;
 
             //---------- Panels ----------//
 
@@ -40,6 +39,12 @@ namespace VenusBuggy
             Panel pan_MenuEnd = null;
             Panel pan_MenuOpts = null;
             Panel pan_MenuNew = null;
+
+            Panel pan_OptsBack = null;
+            Panel lab_Music = null;
+            Panel lab_Effects = null;
+            HSlider hsl_VolumeMusic = null;
+            HSlider hsl_VolumeEffects = null;
             //Panel pan_MenuTest = null;
             
             using (var app = new GameWindow())
@@ -52,18 +57,25 @@ namespace VenusBuggy
                     app.WindowBorder = Border;     
                     app.WindowState = Fullscreen;
 
-                    pan_MenuBG = new Panel(0, 0, Width, Height, 0, "texturen/MenuBG_1920_1080.jpg");
-                    pan_MenuEnd = new Panel(100, 100, 225, 44, -1, "texturen/MenuEnd0.bmp", "texturen/MenuEnd1.bmp");
-                    pan_MenuOpts = new Panel(100, 160, 225, 44, 1, "texturen/MenuOpts0.bmp", "texturen/MenuOpts1.bmp");
-                    pan_MenuNew = new Panel(100, 220, 225, 44, 10, "texturen/MenuNew0.bmp", "texturen/MenuNew1.bmp");
-                    //pan_MenuTest = new Panel(100, 160, 225, 44, "texturen/Bastelkopie.png");
+                    pan_MenuBG = new Panel(0, 0, Width, Height, 0, "texturen/Menu/MenuBG_1920_1080.jpg");
+                    pan_MenuEnd = new Panel(100, 100, 225, 44, -1, "texturen/Menu/MenuEnd0.bmp", "texturen/Menu/MenuEnd1.bmp");
+                    pan_MenuOpts = new Panel(100, 160, 225, 44, 1, "texturen/Menu/MenuOpts0.bmp", "texturen/Menu/MenuOpts1.bmp");
+                    pan_MenuNew = new Panel(100, 220, 225, 44, 10, "texturen/Menu/MenuNew0.bmp", "texturen/Menu/MenuNew1.bmp");
+
+                    lab_Music = new Panel((int)(Width/2) - 300, (int)(Height/2) + 100, 225, 44, 0, "texturen/Menu/Music.bmp");
+                    lab_Effects = new Panel((int)(Width / 2) - 300, (int)(Height / 2) + 40, 225, 44, 0, "texturen/Menu/Effects.bmp");
+
+                    pan_OptsBack = new Panel((int)(Width / 2) - 300, (int)(Height / 2) -80, 225, 44, 0, "texturen/Menu/OptsBack0.bmp", "texturen/Menu/OptsBack1.bmp");
+
+                    hsl_VolumeMusic = new HSlider((int)(Width / 2), (int)(Height / 2) + 100, 300, 5, 44, 11, 44, 44, 13, 44, 0, "texturen/Menu/SliderEnd.bmp", "texturen/Menu/SliderBar.bmp", "texturen/Menu/Slider0.bmp", "texturen/Menu/Slider1.bmp", "texturen/Menu/Slider2.bmp");
+                    hsl_VolumeEffects = new HSlider((int)(Width / 2), (int)(Height / 2) + 40, 300, 5, 44, 11, 44, 44, 13, 44, 0, "texturen/Menu/SliderEnd.bmp", "texturen/Menu/SliderBar.bmp", "texturen/Menu/Slider0.bmp", "texturen/Menu/Slider1.bmp", "texturen/Menu/Slider2.bmp");
 
                     GL.Enable(EnableCap.Texture2D); //Texturierung aktivieren
                     GL.Enable(EnableCap.Blend); //Alpha-Kanäle aktivieren
 
 
                     GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
-                    GL.Disable(EnableCap.DepthTest);
+                    //GL.Disable(EnableCap.DepthTest);
 
                     BGColor = Color.FromArgb(0, 128, 128, 128); //Die Standardfensterfarbe //Nur zur Sicherheit
 
@@ -90,14 +102,17 @@ namespace VenusBuggy
                     //##################################################################### Hier nächste Baustelle
                     switch (cron)
                     {
+                        case (-1):
+                            app.Exit();
+                            break;
                         case 0:
                             Console.WriteLine(mouse.GetType().ToString());
                             cron = pan_MenuEnd.clickCheck(mousePos.X, mousePos.Y, mouse, cron);
-                            pan_MenuOpts.clickCheck(mousePos.X, mousePos.Y, mouse, cron);
+                            cron = pan_MenuOpts.clickCheck(mousePos.X, mousePos.Y, mouse, cron);
                             pan_MenuNew.clickCheck(mousePos.X, mousePos.Y, mouse, cron);
                             break;
-                        case (-1):
-                            app.Exit();
+                        case 1:
+                            cron = pan_OptsBack.clickCheck(mousePos.X, mousePos.Y, mouse, cron);
                             break;
                     }
 
@@ -127,6 +142,14 @@ namespace VenusBuggy
                             pan_MenuOpts.draw();
                             pan_MenuNew.draw();
                             //pan_MenuTest.draw();
+                            break;
+                        case 1:
+                            pan_MenuBG.draw();
+                            pan_OptsBack.draw();
+                            lab_Music.draw();
+                            lab_Effects.draw();
+                            hsl_VolumeMusic.draw();
+                            hsl_VolumeEffects.draw();
                             break;
                     }
 
