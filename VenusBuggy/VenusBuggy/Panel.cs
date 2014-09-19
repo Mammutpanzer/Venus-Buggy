@@ -27,7 +27,11 @@ namespace VenusBuggy
         public int tex_over;
         public int tex_click;
 
-        public Panel(int x, int y, int w, int h, string filename_off, string filename_over, string filename_click)
+        public int tex_active;
+
+        public int result;
+
+        public Panel(int x, int y, int w, int h, int r, string filename_off, string filename_over, string filename_click)
         {
             bmp_off = new Bitmap(filename_off);
             bmp_over = new Bitmap(filename_over);
@@ -39,12 +43,16 @@ namespace VenusBuggy
             tex_over = loadTexture(bmp_over);
             tex_click = loadTexture(bmp_click);
 
+            tex_active = tex_off;
+
             pos.X = x;
             pos.Y = y;
             Width = w;
             Height = h;
+
+            result = r;
         }
-        public Panel(int x, int y, int w, int h, string filename_off, string filename_over)
+        public Panel(int x, int y, int w, int h, int r, string filename_off, string filename_over)
         {
             bmp_off = new Bitmap(filename_off);
             bmp_over = new Bitmap(filename_over);
@@ -56,12 +64,16 @@ namespace VenusBuggy
             tex_over = loadTexture(bmp_over);
             tex_click = 0;
 
+            tex_active = tex_off;
+
             pos.X = x;
             pos.Y = y;
             Width = w;
             Height = h;
+
+            result = r;
         }
-        public Panel(int x, int y, int w, int h, string filename_off)
+        public Panel(int x, int y, int w, int h, int r, string filename_off)
         {
             bmp_off = new Bitmap(filename_off);
             bmp_over = null;
@@ -73,10 +85,14 @@ namespace VenusBuggy
             tex_over = 0;
             tex_click = 0;
 
+            tex_active = tex_off;
+
             pos.X = x;
             pos.Y = y;
             Width = w;
             Height = h;
+
+            result = r;
         }
 
         public void bitmapOverdriveTransparency()
@@ -137,12 +153,14 @@ namespace VenusBuggy
             this.Height = h;
         }
 
-        public void setFull(int x, int y, int w, int h, byte a)
+        public void setFull(int x, int y, int w, int h, int r)
         {
             this.Width = w;
             this.Height = h;
             this.pos.X = x;
             this.pos.Y = y;
+
+            this.result = r;
         }
 
         //public void setBitmapOverdrive(string filename)
@@ -165,7 +183,7 @@ namespace VenusBuggy
 
         public void draw()
         {
-            GL.BindTexture(TextureTarget.Texture2D, tex_off);
+            GL.BindTexture(TextureTarget.Texture2D, tex_active);
             GL.Begin(PrimitiveType.Quads);
             GL.TexCoord2(0, 1);
             GL.Vertex2(pos.X, pos.Y);
@@ -179,6 +197,35 @@ namespace VenusBuggy
         }
 
         //############################################################# Check-Event einfügen und Konstruktor um Rückgabewert 'int result' erweitern
+        public int clickCheck(int x, int y, MouseState state, int cron)
+        {
 
+
+            if (((x >= pos.X) && (x <= (pos.X + Width))) && ((y >= pos.Y) && (y <= (pos.Y + Height))))  //Ist der Cursor im Panel-Feld
+            {
+                switch (state[MouseButton.Left])    //wurde das Panel auch angeklickt
+                {
+                    case true:
+                        if (tex_click != 0)
+                        {
+                            tex_active = tex_click;
+                        }
+                        return result;
+
+                    case false:
+                        if (tex_over != 0)
+                        {
+                            tex_active = tex_over;
+                        }
+                        break;
+                }
+
+            }
+            else
+            {
+                tex_active = tex_off;
+            }
+            return cron;        //sonst gebe den bereits vorhandenen Cron wieder zurück
+        }
     }
 }

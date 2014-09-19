@@ -31,6 +31,8 @@ namespace VenusBuggy
             var Fullscreen = WindowState.Fullscreen; //Vollbildmodus
 
             Point mousePos = new Point();
+            var mouse = Mouse.GetState();
+            bool mouseClick = false;
 
             //---------- Panels ----------//
 
@@ -50,10 +52,10 @@ namespace VenusBuggy
                     app.WindowBorder = Border;     
                     app.WindowState = Fullscreen;
 
-                    pan_MenuBG = new Panel(0, 0, Width, Height, "texturen/MenuBG_1920_1080.jpg");
-                    pan_MenuEnd = new Panel(100, 100, 225, 44, "texturen/MenuEnd0.bmp", "texturen/MenuEnd1.bmp");
-                    pan_MenuOpts = new Panel(100, 160, 225, 44, "texturen/MenuOpts0.bmp", "texturen/MenuOpts1.bmp");
-                    pan_MenuNew = new Panel(100, 220, 225, 44, "texturen/MenuNew0.bmp", "texturen/MenuNew1.bmp");
+                    pan_MenuBG = new Panel(0, 0, Width, Height, 0, "texturen/MenuBG_1920_1080.jpg");
+                    pan_MenuEnd = new Panel(100, 100, 225, 44, -1, "texturen/MenuEnd0.bmp", "texturen/MenuEnd1.bmp");
+                    pan_MenuOpts = new Panel(100, 160, 225, 44, 1, "texturen/MenuOpts0.bmp", "texturen/MenuOpts1.bmp");
+                    pan_MenuNew = new Panel(100, 220, 225, 44, 10, "texturen/MenuNew0.bmp", "texturen/MenuNew1.bmp");
                     //pan_MenuTest = new Panel(100, 160, 225, 44, "texturen/Bastelkopie.png");
 
                     GL.Enable(EnableCap.Texture2D); //Texturierung aktivieren
@@ -77,14 +79,27 @@ namespace VenusBuggy
                 {
                     mousePos.X = app.Mouse.X;               //Aktualisiere Maus-Koordinaten
                     mousePos.Y = Height - app.Mouse.Y - 1;
+                    mouse = Mouse.GetState();
 
-                    if (app.Keyboard[Key.Escape])
-                    {
-                        app.Exit();
-                    }
+
+                    //if (app.Keyboard[Key.Escape])
+                    //{
+                    //    app.Exit();
+                    //}
 
                     //##################################################################### Hier nächste Baustelle
-
+                    switch (cron)
+                    {
+                        case 0:
+                            Console.WriteLine(mouse.GetType().ToString());
+                            cron = pan_MenuEnd.clickCheck(mousePos.X, mousePos.Y, mouse, cron);
+                            pan_MenuOpts.clickCheck(mousePos.X, mousePos.Y, mouse, cron);
+                            pan_MenuNew.clickCheck(mousePos.X, mousePos.Y, mouse, cron);
+                            break;
+                        case (-1):
+                            app.Exit();
+                            break;
+                    }
 
 
 
