@@ -69,19 +69,13 @@ namespace VenusBuggy
             this.result = result;
         }
 
-        public void bitmapOverdriveTransparency()
+        public void bitmapOverdriveTransparency()       //Schalte Transparenz für Magenta-des-Todes ein
         {
             bmp_end.MakeTransparent(Color.FromArgb(0, 255, 0, 255));
             bmp_bar.MakeTransparent(Color.FromArgb(0, 255, 0, 255));
             bmp_off.MakeTransparent(Color.FromArgb(0, 255, 0, 255));
-            if (bmp_over != null)
-            {
-                bmp_over.MakeTransparent(Color.FromArgb(0, 255, 0, 255));
-            }
-            if (bmp_click != null)
-            {
-                bmp_click.MakeTransparent(Color.FromArgb(0, 255, 0, 255));
-            }
+            bmp_over.MakeTransparent(Color.FromArgb(0, 255, 0, 255));
+            bmp_click.MakeTransparent(Color.FromArgb(0, 255, 0, 255));
         }
 
         public int loadTexture(Bitmap bmp)    //Fertiger Texturenlader - Gibt die Speicher-ID zurück
