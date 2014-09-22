@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Config.cs" />
     <Compile Include="HSlider.cs" />
     <Compile Include="Panel.cs" />
     <Compile Include="Program.cs" />

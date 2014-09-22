@@ -20,18 +20,36 @@ namespace VenusBuggy
             Application game = new Application();   //Genereller Objektverweis. Hiermit kann auf nicht statische Objekte zugegriffen werden via game.example(x, y)
 
             //--------- Systemvariablen ----------//
+
             int cron = 0;   //Globale Steuervariable
 
-            short Width = 1920; //Fenstergröße
-            short Height = 1080;
+            int Width = 0;
+            int Height = 0;
+
+            Point mousePos = new Point();
+            var mouse = Mouse.GetState();
 
             var BGColor = new Color(); //Hintergrundfarbe       BGColor = Color.FromArgb(0, 128, 128, 128);
 
             var Border = WindowBorder.Hidden;   //Rahmen
             var Fullscreen = WindowState.Fullscreen; //Vollbildmodus
 
-            Point mousePos = new Point();
-            var mouse = Mouse.GetState();
+            Config config = new Config();
+
+            int volumeEffects = config.getValue(0);
+            int volumeMusic = config.getValue(1);
+
+            foreach (DisplayIndex index in Enum.GetValues(typeof(DisplayIndex)))    //Nimm die derzeit besten Vollbildkoordinaten vom Primären Bildschirm
+            {
+                DisplayDevice device = DisplayDevice.GetDisplay(index);
+                if (device == null)
+                {
+                    continue;
+                }
+
+                Width = device.Width;
+                Height = device.Height;
+            }
 
             //---------- Panels ----------//
 
@@ -51,8 +69,11 @@ namespace VenusBuggy
             {
                 app.Load += (sender, e) =>
                 {
+                    //Width = app.
+                    //Height = app.Bounds.Y;
+
                     app.Title = "VenusBuggy";
-                    app.Width = Width;   
+                    app.Width = Width;
                     app.Height = Height;
                     app.WindowBorder = Border;     
                     app.WindowState = Fullscreen;
@@ -106,7 +127,7 @@ namespace VenusBuggy
                             app.Exit();
                             break;
                         case 0:
-                            Console.WriteLine(mouse.GetType().ToString());
+                            //Console.WriteLine(mouse.GetType().ToString());
                             cron = pan_MenuEnd.clickCheck(mousePos.X, mousePos.Y, mouse, cron);
                             cron = pan_MenuOpts.clickCheck(mousePos.X, mousePos.Y, mouse, cron);
                             pan_MenuNew.clickCheck(mousePos.X, mousePos.Y, mouse, cron);
@@ -141,7 +162,6 @@ namespace VenusBuggy
                             pan_MenuEnd.draw();
                             pan_MenuOpts.draw();
                             pan_MenuNew.draw();
-                            //pan_MenuTest.draw();
                             break;
                         case 1:
                             pan_MenuBG.draw();

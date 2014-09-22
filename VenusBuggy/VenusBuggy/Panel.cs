@@ -196,7 +196,6 @@ namespace VenusBuggy
             GL.End();
         }
 
-        //############################################################# Check-Event einfügen und Konstruktor um Rückgabewert 'int result' erweitern
         public int clickCheck(int x, int y, MouseState state, int cron)
         {
 
