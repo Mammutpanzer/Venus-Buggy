@@ -139,8 +139,14 @@ namespace VenusBuggy
                             {
                                 cron = pan_OptsBack.clickCheck(mousePos.X, mousePos.Y, mouse, cron);
                             }
-                            volumeMusic = hsl_VolumeMusic.clickCheck(mousePos.X, mousePos.Y, mouse, volumeMusic);
-                            volumeEffects = hsl_VolumeEffects.clickCheck(mousePos.X, mousePos.Y, mouse, volumeEffects);
+                            if (!hsl_VolumeEffects.clickLock)
+                            {
+                                volumeMusic = hsl_VolumeMusic.clickCheck(mousePos.X, mousePos.Y, mouse, volumeMusic);
+                            }
+                            if (!hsl_VolumeMusic.clickLock)
+                            {
+                                volumeEffects = hsl_VolumeEffects.clickCheck(mousePos.X, mousePos.Y, mouse, volumeEffects);
+                            }
                             break;
                         case 2:
                             config.writeConfig(volumeMusic.ToString(), volumeEffects.ToString());

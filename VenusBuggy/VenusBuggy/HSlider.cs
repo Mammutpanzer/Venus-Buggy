@@ -35,7 +35,7 @@ namespace VenusBuggy
 
         public int value;
 
-        private bool clickLock;
+        public bool clickLock;
 
         public int tex_end;
         public int tex_bar;
@@ -195,7 +195,7 @@ namespace VenusBuggy
             sliderPos.Y = pos.Y + (int)(barHeight / 2) - (int)(sliderHeight / 2);
 
             // wenn die übergebenen Koordinaten im Feld des aktiven Images liegen
-            if (((x >= pos.X) && (x <= (pos.X + barWidth))) && ((y >= pos.Y) && (y <= (pos.Y + barHeight))))  //Ist der Cursor in der Bar
+            if ((((x >= pos.X) && (x <= (pos.X + barWidth))) && ((y >= pos.Y) && (y <= (pos.Y + barHeight))))          || (clickLock)) //Ist der Cursor in der Bar
             //if (((x >= sliderPos.X) && (x <= (sliderPos.X + sliderWidth))) && ((y >= sliderPos.Y) && (y <= (sliderPos.Y + sliderHeight))))
             {
                 if (state[MouseButton.Left])    //wurde das Panel auch angeklickt
@@ -204,13 +204,7 @@ namespace VenusBuggy
                     {
                         tex_active = tex_click;
                     }
-                    value = (int)((x - pos.X) * 100 / barWidth);
-
-                    if (value < 0)
-                        value = 0;
-                    if (value > 100)
-                        value = 100;
-                    this.value = value;
+                    clickLock = true;
                 }
                 else
                 {
@@ -224,7 +218,17 @@ namespace VenusBuggy
             {
                 tex_active = tex_off;
             }
+            if (clickLock)
+            {
 
+                value = (int)((x - pos.X) * 100 / barWidth);
+
+                if (value < 0)
+                    value = 0;
+                if (value > 100)
+                    value = 100;
+                this.value = value;
+            }
             if ((!state[MouseButton.Left]) && (clickLock))
             {
                 this.value = value;
