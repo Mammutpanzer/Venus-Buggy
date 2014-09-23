@@ -196,7 +196,7 @@ namespace VenusBuggy
             GL.End();
         }
 
-        public int clickCheck(int x, int y, MouseState state, int cron)
+        public int clickCheck(int x, int y, MouseState state, int cron, bool globalclickLock)
         {
 
 
@@ -205,11 +205,23 @@ namespace VenusBuggy
                 switch (state[MouseButton.Left])    //wurde das Panel auch angeklickt
                 {
                     case true:
-                        if (tex_click != 0)
+                        if (!globalclickLock)
                         {
-                            tex_active = tex_click;
+                            if (tex_click != 0)
+                            {
+                                tex_active = tex_click;
+                            }
+                            return result;
                         }
-                        return result;
+                        else
+                        {
+                            if (tex_over != 0)
+                            {
+                                tex_active = tex_over;
+                            }
+                        }
+
+                        break;
 
                     case false:
                         if (tex_over != 0)

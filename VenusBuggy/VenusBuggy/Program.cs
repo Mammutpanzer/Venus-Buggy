@@ -127,18 +127,13 @@ namespace VenusBuggy
                             break;
                         case 0:
                             //Console.WriteLine(mouse.GetType().ToString());
-                            if (!globalClickLock)
-                            {
-                                cron = pan_MenuEnd.clickCheck(mousePos.X, mousePos.Y, mouse, cron);
-                                cron = pan_MenuOpts.clickCheck(mousePos.X, mousePos.Y, mouse, cron);
-                                pan_MenuNew.clickCheck(mousePos.X, mousePos.Y, mouse, cron);
-                            }
+                            cron = pan_MenuEnd.clickCheck(mousePos.X, mousePos.Y, mouse, cron, globalClickLock);
+                            cron = pan_MenuOpts.clickCheck(mousePos.X, mousePos.Y, mouse, cron, globalClickLock);
+                            pan_MenuNew.clickCheck(mousePos.X, mousePos.Y, mouse, cron, globalClickLock);
                             break;
                         case 1:
-                            if (!globalClickLock)
-                            {
-                                cron = pan_OptsBack.clickCheck(mousePos.X, mousePos.Y, mouse, cron);
-                            }
+                            cron = pan_OptsBack.clickCheck(mousePos.X, mousePos.Y, mouse, cron, globalClickLock);
+
                             if (!hsl_VolumeEffects.clickLock)
                             {
                                 volumeMusic = hsl_VolumeMusic.clickCheck(mousePos.X, mousePos.Y, mouse, volumeMusic);
