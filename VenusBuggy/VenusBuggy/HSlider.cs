@@ -14,32 +14,55 @@ namespace VenusBuggy
 {
     class HSlider
     {
-        public int length;
-        public int margin;
-        public int Height;
-
-        public Point pos;
-
-        public int endWidth;
-        public int endHeight;
-
         public Bitmap bmp_end;
         public Bitmap bmp_bar;
         public Bitmap bmp_off;
         public Bitmap bmp_over;
         public Bitmap bmp_click;
 
+        public Point pos;
+
+        public int barWidth;
+        public int barHeight;
+
+        public int endWidth;
+        public int endHeight;
+        public int endMargin;
+
+        public int sliderWidth;
+        public int sliderHeight;
+        private Point sliderPos;
+
+        public int value;
+
+        private bool clickLock;
+
         public int tex_end;
         public int tex_bar;
         public int tex_off;
         public int tex_over;
         public int tex_click;
-
         public int tex_active;
 
-        public int result;
-
-        public HSlider(int x, int y, int length, int margin, int Height, int end_w, int end_h, int bar_h, int slider_w, int slider_h, int result, string filename_end, string filename_bar, string filename_off, string filename_over, string filename_click)
+        /// <summary>
+        /// Erstellt einen horizontalen Slider
+        /// </summary>
+        /// <param name="value">Startvalue, an den der Slider prozentual gesetzt wird. Wertebereich von 0 bis 100. (Anzusehen in Prozent)</param>
+        /// <param name="posX">Linke Ecke der Bar.</param>
+        /// <param name="posY">Untere Ecke der Bar.</param>
+        /// <param name="barWidth">Länge der Bar.</param>
+        /// <param name="endMargin">Einzug der Endstücke nach innen.</param>
+        /// <param name="barHeight">Höhe der Bar.</param>
+        /// <param name="endWidth">Breite des Endstücks</param>
+        /// <param name="endHeight">Höhe des Endstücks</param>
+        /// <param name="sliderWidth">Breite des Sliders</param>
+        /// <param name="sliderHeight">Höhe des Sliders</param>
+        /// <param name="filename_end">Dateipfad</param>
+        /// <param name="filename_bar">Dateipfad</param>
+        /// <param name="filename_off">Dateipfad</param>
+        /// <param name="filename_over">Dateipfad</param>
+        /// <param name="filename_click">Dateipfad</param>
+        public HSlider(int value, int posX, int posY, int barWidth, int endMargin, int barHeight, int endWidth, int endHeight, int sliderWidth, int sliderHeight, string filename_end, string filename_bar, string filename_off, string filename_over, string filename_click)
         {
             bmp_end = new Bitmap(filename_end);
             bmp_bar = new Bitmap(filename_bar);
@@ -57,16 +80,22 @@ namespace VenusBuggy
 
             tex_active = tex_off;
 
-            pos.X = x;
-            pos.Y = y;
-            this.length = length;
-            this.margin = margin;
-            this.Height = Height;
+            this.pos.X = posX;
+            this.pos.Y = posY;
 
-            endWidth = end_w;
-            endHeight = end_h;
+            this.barWidth = barWidth;
+            this.barHeight = barHeight;
 
-            this.result = result;
+            this.endWidth = endWidth;
+            this.endHeight = endHeight;
+            this.endMargin = endMargin;
+
+            this.sliderWidth = sliderWidth;
+            this.sliderHeight = sliderHeight;
+
+            this.value = value;
+
+            this.clickLock = false;
         }
 
         public void bitmapOverdriveTransparency()       //Schalte Transparenz für Magenta-des-Todes ein
@@ -83,7 +112,6 @@ namespace VenusBuggy
             int id = GL.GenTexture();       //Nimm die Textur und gib ihr eine ID
             GL.BindTexture(TextureTarget.Texture2D, id);
 
-            //Bitmap bmp = new Bitmap(filename);
             BitmapData bmp_data = bmp.LockBits(
                 new Rectangle(0, 0, bmp.Width, bmp.Height),
                 ImageLockMode.ReadOnly,
@@ -107,55 +135,102 @@ namespace VenusBuggy
             return id;
         }
 
-        public void draw() //############################## Hier Target oder so hinzufügen (Slider nimmt erstmal die Position des jeweiligen Werts an.
+        public void draw()
         {
             GL.BindTexture(TextureTarget.Texture2D, tex_bar);
-            GL.Begin(PrimitiveType.Quads);                          //Muss erst getestet werden
+            GL.Begin(PrimitiveType.Quads);                          
             GL.TexCoord2(0, 1);     
-            GL.Vertex2(             pos.X - margin,               pos.Y + (int)(endHeight/2) - (int)(Height/2));
+            GL.Vertex2(             pos.X - endMargin,                  pos.Y + (int)(endHeight/2) - (int)(barHeight/2));
             GL.TexCoord2(1, 1);
-            GL.Vertex2(             pos.X + margin + length,      pos.Y + (int)(endHeight/2) - (int)(Height/2));
+            GL.Vertex2(             pos.X + endMargin + barWidth,       pos.Y + (int)(endHeight / 2) - (int)(barHeight / 2));
             GL.TexCoord2(1, 0);
-            GL.Vertex2(             pos.X + margin + length,      pos.Y + (int)(endHeight/2) + (int)(Height/2));
+            GL.Vertex2(             pos.X + endMargin + barWidth,       pos.Y + (int)(endHeight / 2) + (int)(barHeight / 2));
             GL.TexCoord2(0, 0);
-            GL.Vertex2(             pos.X - margin,               pos.Y + (int)(endHeight/2) + (int)(Height/2));
+            GL.Vertex2(             pos.X - endMargin,                  pos.Y + (int)(endHeight / 2) + (int)(barHeight / 2));
             GL.End();
 
             GL.BindTexture(TextureTarget.Texture2D, tex_end);
             GL.Begin(PrimitiveType.Quads);
             GL.TexCoord2(0, 1);
-            GL.Vertex2(             pos.X - endWidth + margin,      pos.Y);
+            GL.Vertex2(             pos.X - endWidth + endMargin,       pos.Y);
             GL.TexCoord2(1, 1);
-            GL.Vertex2(             pos.X + margin,                 pos.Y);
+            GL.Vertex2(             pos.X + endMargin,                  pos.Y);
             GL.TexCoord2(1, 0);
-            GL.Vertex2(             pos.X + margin,                 pos.Y + endHeight);
+            GL.Vertex2(             pos.X + endMargin,                  pos.Y + endHeight);
             GL.TexCoord2(0, 0);
-            GL.Vertex2(             pos.X - endWidth + margin,      pos.Y + endHeight);
+            GL.Vertex2(             pos.X - endWidth + endMargin,       pos.Y + endHeight);
             GL.End();
 
             GL.BindTexture(TextureTarget.Texture2D, tex_end);
             GL.Begin(PrimitiveType.Quads);
             GL.TexCoord2(1, 0);
-            GL.Vertex2(             pos.X - margin + length,                            pos.Y);
+            GL.Vertex2(             pos.X - endMargin + barWidth,               pos.Y);
             GL.TexCoord2(0, 0);
-            GL.Vertex2(             pos.X + endWidth - margin + length,                 pos.Y);
+            GL.Vertex2(             pos.X + endWidth - endMargin + barWidth,    pos.Y);
             GL.TexCoord2(0, 1);
-            GL.Vertex2(             pos.X + endWidth - margin + length,                 pos.Y + endHeight);
+            GL.Vertex2(             pos.X + endWidth - endMargin + barWidth,    pos.Y + endHeight);
             GL.TexCoord2(1, 1);
-            GL.Vertex2(             pos.X - margin + length,                            pos.Y + endHeight);
+            GL.Vertex2(             pos.X - endMargin + barWidth,               pos.Y + endHeight);
             GL.End();
 
-            //GL.BindTexture(TextureTarget.Texture2D, tex_active);
-            //GL.Begin(PrimitiveType.Quads);
-            //GL.TexCoord2(0, 1);
-            //GL.Vertex2(pos.X, pos.Y);
-            //GL.TexCoord2(1, 1);
-            //GL.Vertex2(pos.X + Width, pos.Y);
-            //GL.TexCoord2(1, 0);
-            //GL.Vertex2(pos.X + Width, pos.Y + Height);
-            //GL.TexCoord2(0, 0);
-            //GL.Vertex2(pos.X, pos.Y + Height);
-            //GL.End();
+
+
+            GL.BindTexture(TextureTarget.Texture2D, tex_active);
+            GL.Begin(PrimitiveType.Quads);
+            GL.TexCoord2(1, 0);
+            GL.Vertex2(             (int)(pos.X + (barWidth / 100 * value) - (int)(sliderWidth / 2)),       pos.Y + (int)(barHeight / 2) - (int)(sliderHeight / 2));
+            GL.TexCoord2(0, 0);
+            GL.Vertex2(             (int)(pos.X + (barWidth / 100 * value) + (int)(sliderWidth / 2)),       pos.Y + (int)(barHeight / 2) - (int)(sliderHeight / 2));
+            GL.TexCoord2(0, 1);
+            GL.Vertex2(             (int)(pos.X + (barWidth / 100 * value) + (int)(sliderWidth / 2)),       pos.Y + (int)(barHeight / 2) + (int)(sliderHeight / 2));
+            GL.TexCoord2(1, 1);
+            GL.Vertex2(             (int)(pos.X + (barWidth / 100 * value) - (int)(sliderWidth / 2)),       pos.Y + (int)(barHeight / 2) + (int)(sliderHeight / 2));
+            GL.End();
+        }
+
+
+        public int clickCheck(int x, int y, MouseState state, int value)
+        {
+            sliderPos.X = (int)(pos.X + (barWidth / 100 * value) - (int)(sliderWidth / 2));
+            sliderPos.Y = pos.Y + (int)(barHeight / 2) - (int)(sliderHeight / 2);
+
+            // wenn die übergebenen Koordinaten im Feld des aktiven Images liegen
+            if (((x >= pos.X) && (x <= (pos.X + barWidth))) && ((y >= pos.Y) && (y <= (pos.Y + barHeight))))  //Ist der Cursor in der Bar
+            //if (((x >= sliderPos.X) && (x <= (sliderPos.X + sliderWidth))) && ((y >= sliderPos.Y) && (y <= (sliderPos.Y + sliderHeight))))
+            {
+                if (state[MouseButton.Left])    //wurde das Panel auch angeklickt
+                {
+                    if (tex_click != 0)
+                    {
+                        tex_active = tex_click;
+                    }
+                    value = (int)((x - pos.X) * 100 / barWidth);
+
+                    if (value < 0)
+                        value = 0;
+                    if (value > 100)
+                        value = 100;
+                    this.value = value;
+                }
+                else
+                {
+                    if (tex_over != 0)
+                    {
+                        tex_active = tex_over;
+                    }
+                }
+            }
+            else
+            {
+                tex_active = tex_off;
+            }
+
+            if ((!state[MouseButton.Left]) && (clickLock))
+            {
+                this.value = value;
+                clickLock = false;
+            }
+            return value;
         }
     }
 }

@@ -28,6 +28,7 @@ namespace VenusBuggy
 
             Point mousePos = new Point();
             var mouse = Mouse.GetState();
+            bool globalClickLock = false;   //wenn ein Klick fortbesteht, so sperre via ClickLock, damit beim Drag auf einen Button dieser nicht aktiviert werden kann.
 
             var BGColor = new Color(); //Hintergrundfarbe       BGColor = Color.FromArgb(0, 128, 128, 128);
 
@@ -36,8 +37,8 @@ namespace VenusBuggy
 
             Config config = new Config();
 
-            int volumeEffects = config.getValue(0);
             int volumeMusic = config.getValue(1);
+            int volumeEffects = config.getValue(2);
 
             foreach (DisplayIndex index in Enum.GetValues(typeof(DisplayIndex)))    //Nimm die derzeit besten Vollbildkoordinaten vom Primären Bildschirm
             {
@@ -75,7 +76,7 @@ namespace VenusBuggy
                     app.Title = "VenusBuggy";
                     app.Width = Width;
                     app.Height = Height;
-                    app.WindowBorder = Border;     
+                    app.WindowBorder = Border;
                     app.WindowState = Fullscreen;
 
                     pan_MenuBG = new Panel(0, 0, Width, Height, 0, "texturen/Menu/MenuBG_1920_1080.jpg");
@@ -86,10 +87,10 @@ namespace VenusBuggy
                     lab_Music = new Panel((int)(Width/2) - 300, (int)(Height/2) + 100, 225, 44, 0, "texturen/Menu/Music.bmp");
                     lab_Effects = new Panel((int)(Width / 2) - 300, (int)(Height / 2) + 40, 225, 44, 0, "texturen/Menu/Effects.bmp");
 
-                    pan_OptsBack = new Panel((int)(Width / 2) - 300, (int)(Height / 2) -80, 225, 44, 0, "texturen/Menu/OptsBack0.bmp", "texturen/Menu/OptsBack1.bmp");
+                    pan_OptsBack = new Panel((int)(Width / 2) - 300, (int)(Height / 2) -80, 225, 44, 2, "texturen/Menu/OptsBack0.bmp", "texturen/Menu/OptsBack1.bmp");
 
-                    hsl_VolumeMusic = new HSlider((int)(Width / 2), (int)(Height / 2) + 100, 300, 5, 44, 11, 44, 44, 13, 44, 0, "texturen/Menu/SliderEnd.bmp", "texturen/Menu/SliderBar.bmp", "texturen/Menu/Slider0.bmp", "texturen/Menu/Slider1.bmp", "texturen/Menu/Slider2.bmp");
-                    hsl_VolumeEffects = new HSlider((int)(Width / 2), (int)(Height / 2) + 40, 300, 5, 44, 11, 44, 44, 13, 44, 0, "texturen/Menu/SliderEnd.bmp", "texturen/Menu/SliderBar.bmp", "texturen/Menu/Slider0.bmp", "texturen/Menu/Slider1.bmp", "texturen/Menu/Slider2.bmp");
+                    hsl_VolumeMusic = new HSlider(volumeMusic, (int)(Width / 2), (int)(Height / 2) + 100, 300, 5, 44,  11, 44, 13, 44, "texturen/Menu/SliderEnd.bmp", "texturen/Menu/SliderBar.bmp", "texturen/Menu/Slider0.bmp", "texturen/Menu/Slider1.bmp", "texturen/Menu/Slider2.bmp");
+                    hsl_VolumeEffects = new HSlider(volumeEffects, (int)(Width / 2), (int)(Height / 2) + 40, 300, 5, 44, 11, 44, 13, 44, "texturen/Menu/SliderEnd.bmp", "texturen/Menu/SliderBar.bmp", "texturen/Menu/Slider0.bmp", "texturen/Menu/Slider1.bmp", "texturen/Menu/Slider2.bmp");
 
                     GL.Enable(EnableCap.Texture2D); //Texturierung aktivieren
                     GL.Enable(EnableCap.Blend); //Alpha-Kanäle aktivieren
@@ -114,13 +115,11 @@ namespace VenusBuggy
                     mousePos.Y = Height - app.Mouse.Y - 1;
                     mouse = Mouse.GetState();
 
-
                     //if (app.Keyboard[Key.Escape])
                     //{
                     //    app.Exit();
                     //}
 
-                    //##################################################################### Hier nächste Baustelle
                     switch (cron)
                     {
                         case (-1):
@@ -128,15 +127,28 @@ namespace VenusBuggy
                             break;
                         case 0:
                             //Console.WriteLine(mouse.GetType().ToString());
-                            cron = pan_MenuEnd.clickCheck(mousePos.X, mousePos.Y, mouse, cron);
-                            cron = pan_MenuOpts.clickCheck(mousePos.X, mousePos.Y, mouse, cron);
-                            pan_MenuNew.clickCheck(mousePos.X, mousePos.Y, mouse, cron);
+                            if (!globalClickLock)
+                            {
+                                cron = pan_MenuEnd.clickCheck(mousePos.X, mousePos.Y, mouse, cron);
+                                cron = pan_MenuOpts.clickCheck(mousePos.X, mousePos.Y, mouse, cron);
+                                pan_MenuNew.clickCheck(mousePos.X, mousePos.Y, mouse, cron);
+                            }
                             break;
                         case 1:
-                            cron = pan_OptsBack.clickCheck(mousePos.X, mousePos.Y, mouse, cron);
+                            if (!globalClickLock)
+                            {
+                                cron = pan_OptsBack.clickCheck(mousePos.X, mousePos.Y, mouse, cron);
+                            }
+                            volumeMusic = hsl_VolumeMusic.clickCheck(mousePos.X, mousePos.Y, mouse, volumeMusic);
+                            volumeEffects = hsl_VolumeEffects.clickCheck(mousePos.X, mousePos.Y, mouse, volumeEffects);
+                            break;
+                        case 2:
+                            config.writeConfig(volumeMusic.ToString(), volumeEffects.ToString());
+                            cron = 0;
                             break;
                     }
 
+                    globalClickLock = (mouse[MouseButton.Left]);    //Überprüft, ob die Maustaste gehalten wird
 
 
                 };
@@ -170,6 +182,11 @@ namespace VenusBuggy
                             lab_Effects.draw();
                             hsl_VolumeMusic.draw();
                             hsl_VolumeEffects.draw();
+
+
+
+                            //Console.WriteLine(volumeMusic);
+                            //Console.WriteLine(volumeEffects);
                             break;
                     }
 

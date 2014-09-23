@@ -65,5 +65,19 @@ namespace VenusBuggy
             return result;
         }
 
+        public void writeConfig(string volumeMusic, string volumeEffects)
+        {
+            if (File.Exists(s))
+            {
+                File.Delete(s);
+            }
+            using (System.IO.StreamWriter file = new System.IO.StreamWriter(s))
+            {
+                //Datei vollständig überschreiben mit neuen Werten
+                file.WriteLine(volumeMusic);
+                file.WriteLine(volumeEffects);
+            }
+        }
+
     }
 }
