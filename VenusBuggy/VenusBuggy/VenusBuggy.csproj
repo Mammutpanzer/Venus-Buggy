@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Audio.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="HSlider.cs" />
     <Compile Include="Panel.cs" />

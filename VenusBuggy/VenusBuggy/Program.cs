@@ -36,6 +36,7 @@ namespace VenusBuggy
             var Fullscreen = WindowState.Fullscreen; //Vollbildmodus
 
             Config config = new Config();
+            Audio audio = new Audio();
 
             int volumeMusic = config.getValue(1);
             int volumeEffects = config.getValue(2);
@@ -51,6 +52,10 @@ namespace VenusBuggy
                 Width = device.Width;
                 Height = device.Height;
             }
+
+            //---------- Audios ----------// // Muss noch bearbeitet werden. Wahrscheinlich werden alle Daten in Wave-Instanzen gespeichert.
+
+            audio.loadAudio("sounds.Main.wav");
 
             //---------- Panels ----------//
 
