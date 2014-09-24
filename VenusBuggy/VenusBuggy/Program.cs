@@ -5,7 +5,10 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using OpenTK;
+using OpenTK.Audio;
+using OpenTK.Audio.OpenAL;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
@@ -36,7 +39,6 @@ namespace VenusBuggy
             var Fullscreen = WindowState.Fullscreen; //Vollbildmodus
 
             Config config = new Config();
-            Audio audio = new Audio();
 
             int volumeMusic = config.getValue(1);
             int volumeEffects = config.getValue(2);
@@ -55,7 +57,15 @@ namespace VenusBuggy
 
             //---------- Audios ----------// // Muss noch bearbeitet werden. Wahrscheinlich werden alle Daten in Wave-Instanzen gespeichert.
 
-            audio.loadAudio("sounds.Main.wav");
+            Audio audio = new Audio();
+
+            AudioContext context = new AudioContext();
+
+
+
+            
+                    
+
 
             //---------- Panels ----------//
 
@@ -107,6 +117,8 @@ namespace VenusBuggy
                     BGColor = Color.FromArgb(0, 128, 128, 128); //Die Standardfensterfarbe //Nur zur Sicherheit
 
                     app.VSync = VSyncMode.On;
+
+
                 };
 
                 app.Resize += (sender, e) =>
