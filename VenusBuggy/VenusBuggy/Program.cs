@@ -12,6 +12,7 @@ using OpenTK.Audio.OpenAL;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
+using System.Media;
 
 namespace VenusBuggy
 {
@@ -57,15 +58,8 @@ namespace VenusBuggy
 
             //---------- Audios ----------// // Muss noch bearbeitet werden. Wahrscheinlich werden alle Daten in Wave-Instanzen gespeichert.
 
-            Audio audio = new Audio();
 
-            AudioContext context = new AudioContext();
-
-
-
-            
-                    
-
+            SoundPlayer Sound = new SoundPlayer("sounds/Main.wav");
 
             //---------- Panels ----------//
 
@@ -110,6 +104,7 @@ namespace VenusBuggy
                     GL.Enable(EnableCap.Texture2D); //Texturierung aktivieren
                     GL.Enable(EnableCap.Blend); //Alpha-Kanäle aktivieren
 
+                    
 
                     GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
                     //GL.Disable(EnableCap.DepthTest);
@@ -118,7 +113,7 @@ namespace VenusBuggy
 
                     app.VSync = VSyncMode.On;
 
-
+                    Sound.Play();
                 };
 
                 app.Resize += (sender, e) =>
